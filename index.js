@@ -8,6 +8,7 @@ const PORT = config.get('port') || 5000
 
 const app = new Koa()
 const User = db.users
+require('koa-validate')(app)
 
 app.use(koaBody())
 app.use(router.routes()) //эта и след строчки описаны в документации

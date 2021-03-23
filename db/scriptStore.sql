@@ -39,3 +39,6 @@ show databases;
 use ttstoreproject;
 show tables;
 select * from goods;
+select * from users;
+insert into users (username, email, pass, role, money) values ("username2", "qwe2@mail.ru", "1234567", 0, 0);
+select * from users;
