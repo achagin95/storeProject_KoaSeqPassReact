@@ -19,13 +19,18 @@
   "author": "Andrey Chagin",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-passport": "^4.1.4",
     "koa-router": "^10.0.0",
     "koa-validate": "^1.0.7",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "passport-jwt": "^4.0.0",
     "sequelize": "^6.5.1",
     "sequelize-cli": "^6.2.0"
   },
