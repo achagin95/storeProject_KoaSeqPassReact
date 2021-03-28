@@ -1,5 +1,6 @@
 const Router = require('koa-router')
-const router = new Router()
+
+const router = new Router() //может добавть .prefix("/api")
 const bcrypt = require('bcryptjs')
 
 const db = require('../db/index')
@@ -7,7 +8,9 @@ const User = db.users
 
 
 const authFunc = require('./functions/auth')
+const storeFunc = require('./functions/storeFunc')
 
+//авторизация
 router.post('/register', async function (ctx) {
     try {
         await authFunc.reg(ctx)
@@ -20,6 +23,16 @@ router.post('/register', async function (ctx) {
 router.post('/login', async function (ctx) {
     try {
         await authFunc.login(ctx)
+    } catch (error) {
+        ctx.status = 500
+        ctx.body = 'Server error'
+    }
+})
+
+//общие функции в магазине (показать товары, показать инфо о товаре)
+router.get('/', async (ctx) => {
+    try {
+        await storeFunc.getAllGoods(ctx)
     } catch (error) {
         ctx.status = 500
         ctx.body = 'Server error'
