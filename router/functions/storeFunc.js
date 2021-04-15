@@ -1,15 +1,35 @@
 
 const db = require('../../db/index')
-
-//создать базу данных для товаров и импортировать ее вместо юера
-//const User = db.users
+const config = require('../../lib/config')
+const User = db.users
+const Goods = db.goods
 
 
 exports.getAllGoods = async function (ctx) {
-    const { query } = ctx
-    const { skip, limit } = query
-    delete query.skip
-    delete query.limit
+
+
+    try {
+        const count = await Goods.count()
+        if (count === 0) {
+            //return ctx.body = 'Store is empty'
+            return ctx.body = { message: 'Store is empty'}
+            
+        }
+        ctx.set('x-total-count', count)
+        console.log(count)
+        const goods = await Goods.findAll()
+
+        ctx.body = goods
+    } catch (error) {
+        ctx.status = error.status
+        ctx.body = JSON.stringify(error.message)
+    }
+
+
+    //const { query } = ctx
+    //const { skip, limit } = query
+    //delete query.skip
+    //delete query.limit
 
     //const q = 'users' in query ?
     //{ user: { $in: query.users.split(',') } } : query
@@ -20,11 +40,91 @@ exports.getAllGoods = async function (ctx) {
     //     .skip(+skip)
     //     .limit(+limit)
 
-    const q = 'goods' in query ?
-    { goods: {$in: query.goods.split(',') } } : query
+    // const q = 'goods' in query ?
+    // { goods: {$in: query.goods.split(',') } } : query
     //скорее всего $in идет от монгуса, проверить позже через построчный дебаг
     // возможно сделать придется по своему
+    //ctx.set('x-total-count', await )
+}
 
-    
+exports.getGoodById = async function (ctx) {
 
+    try {
+        const { id } = ctx.params
+        const id2 = ctx.request.body.id
+        const good = await Goods.findByPk(id)
+        if (!good) {
+            ctx.throw(404, 'not found')
+        }
+
+        ctx.body = good
+    } catch (error) {
+        ctx.status = error.status
+        ctx.body = JSON.stringify(error.message)
+    }
+}
+
+exports.createGood = async function(ctx) {
+    try {
+        const {goodname, goodprice, goodcount} = ctx.request.body
+        if (!goodname) {
+            ctx.throw(400, 'bad name')
+        }
+        if (!goodcount) {
+            ctx.throw(400,'bad count')
+        }
+        if (!goodprice) {
+            ctx.throw(400,'bad price')
+        }
+        const findOne = await Goods.findOne({
+            where: {
+                goodname: `${goodname}`
+            }
+        })
+
+        if (findOne) {
+            ctx.throw(400, "duplicate good's name")
+        }
+        
+        const newGood = Goods.build({
+            goodname: `${goodname}`,
+            goodprice,
+            goodcount
+        })
+
+        await newGood.save()
+        ctx.status = 201
+
+        ctx.body = {
+            success: true,
+            goodnsme: newGood.goodname,
+            goodprice: newGood.goodprice,
+            goodcount: newGood.goodcount
+        }
+
+    } catch (error) {
+        ctx.status = error.status
+        ctx.body = JSON.stringify(error.message)
+    }
+}
+
+exports.deleteGoodById = async function(ctx) {
+    try {
+        //проверки не добавлял, т.к. в любом случай если промах по ИД,
+        // то удаляем промах))
+        const {_id, body} = ctx.params
+        await Goods.destroy({
+            where: {
+                id: `${_id}`
+            }
+        })
+
+        ctx.body = {
+            deleted: true
+        }
+        //const user = ctx.state.user позже проверить
+    } catch (error) {
+        ctx.status = error.status
+        ctx.body = JSON.stringify(error.message)
+    }
 }

@@ -6,10 +6,12 @@ const sequelize = new Sequelize('ttstoreproject', 'root', 'test', {
 })
 
 const User = require('./User')(sequelize)
+const Goods = require('./Goods')(sequelize)
 
 module.exports = {
     sequelize: sequelize,
-    users: User
+    users: User,
+    goods: Goods
 }
 
 //ниже проверка, что все установлено верно)) 
