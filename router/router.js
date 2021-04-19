@@ -25,7 +25,8 @@ router.post('/login', async function (ctx) {
         console.log(ctx)
         await authFunc.login(ctx)
     } catch (error) {
-        ctx.body = error.message || 'Server error'
+        //ctx.body = error.message || 'Server error'
+        ctx.body = JSON.stringify(error.message)
         ctx.status = error.status || 500
         // ctx.status = 500
         // ctx.body = 'Server error'

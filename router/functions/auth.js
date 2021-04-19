@@ -82,7 +82,7 @@ exports.login = async function (ctx) {
         const payload = {
             id: findOne.id,
             email: findOne.email,
-            name: findOne.name,
+            name: findOne.username,
             role: findOne.role,
             budget: findOne.money
         }
