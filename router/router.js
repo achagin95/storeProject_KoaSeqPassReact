@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 
-const router = new Router() //может добавть .prefix("/api")
+const router = new Router().prefix("/api") //может добавть .prefix("/api")
 const bcrypt = require('bcryptjs')
 
 const db = require('../db/index')
@@ -22,10 +22,13 @@ router.post('/register', async function (ctx) {
 
 router.post('/login', async function (ctx) {
     try {
+        console.log(ctx)
         await authFunc.login(ctx)
     } catch (error) {
-        ctx.status = 500
-        ctx.body = 'Server error'
+        ctx.body = error.message || 'Server error'
+        ctx.status = error.status || 500
+        // ctx.status = 500
+        // ctx.body = 'Server error'
     }
 })
 

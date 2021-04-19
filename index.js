@@ -18,9 +18,9 @@ app.use(koaBody())
 app.use(router.routes()) //эта и след строчки описаны в документации
 app.use(router.allowedMethods()) //koa-router что так нужно подключать
 
-app.use(async context => {
-    context.body='hw'
-})
+// app.use(async context => {
+//     context.body='hw'
+// })
 
 app.listen(PORT, () => {
     console.log(`App has been started on port ${PORT}`)

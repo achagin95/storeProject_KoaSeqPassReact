@@ -100,7 +100,8 @@ exports.login = async function (ctx) {
         // }
 
     } catch (error) {
-        ctx.status = error.status
-        ctx.body = error.message
+        throw error
+        // ctx.body = error.message
+        // ctx.status = error.status
     }
 }
