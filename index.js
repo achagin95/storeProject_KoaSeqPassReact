@@ -1,6 +1,7 @@
 const Koa = require('koa')
 //const config = require('config')
 const config = require('./lib/config')
+const handlers = require('./handlers')
 const Sequelize = require('sequelize')
 const koaBody = require('koa-body')
 
@@ -13,6 +14,8 @@ const PORT = config.port || 5500
 const app = new Koa()
 const User = db.users
 require('koa-validate')(app)
+
+handlers.forEach((h)=> app.use(h))
 
 app.use(koaBody())
 app.use(router.routes()) //эта и след строчки описаны в документации

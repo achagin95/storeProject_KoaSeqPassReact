@@ -20,12 +20,14 @@ module.exports = function (sequelize) {
         goodcount: {
             type: Sequelize.INTEGER,
             allowNull: false
-        },
-        goodImage: {
-            //сохранение картинки на сам сервер, а в базу данных сохранение пути к картинки
-            type: Sequelize.STRING,
-            allowNull: false
         }
+        //проще сделать отдельно Таблицу с картинками привязанными к ИД товара
+        //,
+        // goodImage: {
+        //     //сохранение картинки на сам сервер, а в базу данных сохранение пути к картинки
+        //     type: Sequelize.STRING,
+        //     allowNull: false
+        // }
     }, {
         timestamps: false
         //чтобы не сохранялась дата создания..

@@ -86,10 +86,16 @@ exports.login = async function (ctx) {
             role: findOne.role,
             budget: findOne.money
         }
+        //скорее всего некоторыые данные не понядобятся, позже убрать лишнее
 
         //expiresIn: срок годности токена в миллисекундах
         const token = jwt.sign(payload, config.secret, {expiresIn: 3600*24})
-        ctx.body = { token: `Bearer ${token}`}
+        //ctx.body = { token: `Bearer ${token}`}
+        ctx.body = { token: `${token}`}
+        //decoded работает одинакого с Bearer и без него
+        //узнать в чем разница позже
+        
+
         // ctx.body = {
         //     success: true,
         //     jwt: 111,

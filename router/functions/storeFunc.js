@@ -3,7 +3,7 @@ const db = require('../../db/index')
 const config = require('../../lib/config')
 const User = db.users
 const Goods = db.goods
-
+const jwtDecode = require('jwt-decode')
 
 exports.getAllGoods = async function (ctx) {
 
@@ -66,6 +66,15 @@ exports.getGoodById = async function (ctx) {
 
 exports.createGood = async function(ctx) {
     try {
+        const jwt = ctx.header.authorization.split(' ')[1]
+        console.log(jwt)
+        const decoded = jwtDecode(jwt)
+        if (decoded.role !== 0) {
+            //проверка на наличие роли администратора
+            //пока убрал, чтобы не заморачиваться с проверками.
+            //позже изменить на (decoded.role === 0)
+            ctx.throw(400, 'access rights error.')
+        }
         const {goodname, goodprice, goodcount} = ctx.request.body
         if (!goodname) {
             ctx.throw(400, 'bad name')

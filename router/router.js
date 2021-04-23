@@ -1,4 +1,5 @@
 const Router = require('koa-router')
+const passport = require('koa-passport')
 
 const router = new Router().prefix("/api") //может добавть .prefix("/api")
 const bcrypt = require('bcryptjs')
@@ -22,7 +23,7 @@ router.post('/register', async function (ctx) {
 
 router.post('/login', async function (ctx) {
     try {
-        console.log(ctx)
+        //console.log(ctx)
         await authFunc.login(ctx)
     } catch (error) {
         //ctx.body = error.message || 'Server error'
@@ -70,7 +71,7 @@ router.delete('/:_id', async(ctx) => {
 })
 
 //добавление товара
-router.post('/create', async (ctx) => {
+router.post('/create', passport.authenticate('jwt', {session: false}), async (ctx) => {
     //так же позже добавить проверку на авторизованный токен
     // плюс проверку на роль пользователя
 
