@@ -58,9 +58,10 @@ router.get('/:id', async (ctx) => {
 })
 
 //удаление товара по id
-router.delete('/:_id', async(ctx) => {
-    //позже добавить passport.authenticate('jwt', {session:false})
-    //так же добавить проверку на наличие роли админа
+router.delete('/:_id', passport.authenticate('jwt', {session: false}), async(ctx) => {
+    //методы проверки ролей разные в create и delete
+    // где лучше?))
+
     try {
         //await storeFunc.deleteGoodById(ctx.params)
         await storeFunc.deleteGoodById(ctx)
@@ -72,8 +73,6 @@ router.delete('/:_id', async(ctx) => {
 
 //добавление товара
 router.post('/create', passport.authenticate('jwt', {session: false}), async (ctx) => {
-    //так же позже добавить проверку на авторизованный токен
-    // плюс проверку на роль пользователя
 
     try {
         await storeFunc.createGood(ctx)

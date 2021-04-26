@@ -69,10 +69,7 @@ exports.createGood = async function(ctx) {
         const jwt = ctx.header.authorization.split(' ')[1]
         console.log(jwt)
         const decoded = jwtDecode(jwt)
-        if (decoded.role !== 0) {
-            //проверка на наличие роли администратора
-            //пока убрал, чтобы не заморачиваться с проверками.
-            //позже изменить на (decoded.role === 0)
+        if (decoded.role !== 1) {
             ctx.throw(400, 'access rights error.')
         }
         const {goodname, goodprice, goodcount} = ctx.request.body
@@ -121,7 +118,13 @@ exports.deleteGoodById = async function(ctx) {
     try {
         //проверки не добавлял, т.к. в любом случай если промах по ИД,
         // то удаляем промах))
-        const {_id, body} = ctx.params
+        const {_id} = ctx.params
+        
+        const role = ctx.state.user.role
+        
+        if (role !== 1) {
+            ctx.throw(401, "Access error")
+        }
         await Goods.destroy({
             where: {
                 id: `${_id}`
