@@ -77,8 +77,9 @@ router.post('/create', passport.authenticate('jwt', {session: false}), async (ct
     try {
         await storeFunc.createGood(ctx)
     } catch (error) {
-        ctx.status = 500
-        ctx.body = 'Server error'
+        ctx.status = error.status || 500
+        //ctx.body = 'Server error'
+        ctx.body = JSON.stringify(error.message || 'Server error')
     }
 })
 

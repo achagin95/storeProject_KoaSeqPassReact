@@ -12,8 +12,8 @@ exports.getAllGoods = async function (ctx) {
         const count = await Goods.count()
         if (count === 0) {
             //return ctx.body = 'Store is empty'
-            return ctx.body = { message: 'Store is empty'}
-            
+            //return ctx.body = { message: 'Store is empty' }
+            return ctx.body = []
         }
         ctx.set('x-total-count', count)
         console.log(count)
@@ -64,23 +64,27 @@ exports.getGoodById = async function (ctx) {
     }
 }
 
-exports.createGood = async function(ctx) {
+exports.createGood = async function (ctx) {
     try {
+        
         const jwt = ctx.header.authorization.split(' ')[1]
         console.log(jwt)
         const decoded = jwtDecode(jwt)
         if (decoded.role !== 1) {
             ctx.throw(400, 'access rights error.')
         }
-        const {goodname, goodprice, goodcount} = ctx.request.body
-        if (!goodname) {
+        const { goodname, goodprice, goodcount } = ctx.request.body
+        if (!goodname || goodname.length === 0) {
             ctx.throw(400, 'bad name')
         }
-        if (!goodcount) {
-            ctx.throw(400,'bad count')
+        
+        const num = Number.parseFloat(goodprice)
+        const num2 = Number.parseFloat(goodcount)
+        if (!goodcount || goodcount.length === 0 || !num2) {
+            ctx.throw(400, 'bad count')
         }
-        if (!goodprice) {
-            ctx.throw(400,'bad price')
+        if (!goodprice || goodprice.length === 0 || !num) {
+            ctx.throw(400, 'bad price')
         }
         const findOne = await Goods.findOne({
             where: {
@@ -91,37 +95,41 @@ exports.createGood = async function(ctx) {
         if (findOne) {
             ctx.throw(400, "duplicate good's name")
         }
-        
+
         const newGood = Goods.build({
             goodname: `${goodname}`,
             goodprice,
             goodcount
         })
 
-        await newGood.save()
+        const qwew = await newGood.save()
         ctx.status = 201
 
         ctx.body = {
             success: true,
-            goodnsme: newGood.goodname,
+            goodsid: qwew.id,
+            goodname: newGood.goodname,
             goodprice: newGood.goodprice,
             goodcount: newGood.goodcount
         }
 
     } catch (error) {
+        if (error.name === 'SequelizeDatabaseError') {
+            ctx.throw(400, "SequelizeDatabaseError, count and price must be a number")
+        }
         ctx.status = error.status
         ctx.body = JSON.stringify(error.message)
     }
 }
 
-exports.deleteGoodById = async function(ctx) {
+exports.deleteGoodById = async function (ctx) {
     try {
         //проверки не добавлял, т.к. в любом случай если промах по ИД,
         // то удаляем промах))
-        const {_id} = ctx.params
-        
+        const { _id } = ctx.params
+
         const role = ctx.state.user.role
-        
+
         if (role !== 1) {
             ctx.throw(401, "Access error")
         }
