@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('ttstoreproject', 'root', 'test', {
+//заменить пароль на test
+const sequelize = new Sequelize('ttstoreproject', 'root', '70801706', {
     dialect: "mysql",
     host: "localhost"
 })

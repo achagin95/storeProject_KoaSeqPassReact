@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 const db = require('../db/index')
 const User = db.users
-
+//qwe
 
 const authFunc = require('./functions/auth')
 const storeFunc = require('./functions/storeFunc')
