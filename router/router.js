@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const passport = require('koa-passport')
 
-const router = new Router().prefix("/api") //может добавть .prefix("/api")
+const router = new Router().prefix("/api") 
 const bcrypt = require('bcryptjs')
 
 const db = require('../db/index')
@@ -23,14 +23,11 @@ router.post('/register', async function (ctx) {
 
 router.post('/login', async function (ctx) {
     try {
-        //console.log(ctx)
         await authFunc.login(ctx)
     } catch (error) {
-        //ctx.body = error.message || 'Server error'
+
         ctx.body = JSON.stringify(error.message)
         ctx.status = error.status || 500
-        // ctx.status = 500
-        // ctx.body = 'Server error'
     }
 })
 
@@ -63,7 +60,6 @@ router.delete('/:_id', passport.authenticate('jwt', {session: false}), async(ctx
     // где лучше?))
 
     try {
-        //await storeFunc.deleteGoodById(ctx.params)
         await storeFunc.deleteGoodById(ctx)
     } catch (error) {
         ctx.status = 500
@@ -78,7 +74,6 @@ router.post('/create', passport.authenticate('jwt', {session: false}), async (ct
         await storeFunc.createGood(ctx)
     } catch (error) {
         ctx.status = error.status || 500
-        //ctx.body = 'Server error'
         ctx.body = JSON.stringify(error.message || 'Server error')
     }
 })

@@ -18,8 +18,8 @@ require('koa-validate')(app)
 handlers.forEach((h)=> app.use(h))
 
 app.use(koaBody())
-app.use(router.routes()) //эта и след строчки описаны в документации
-app.use(router.allowedMethods()) //koa-router что так нужно подключать
+app.use(router.routes()) 
+app.use(router.allowedMethods())
 
 // app.use(async context => {
 //     context.body='hw'

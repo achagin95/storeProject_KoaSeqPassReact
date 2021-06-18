@@ -7,8 +7,8 @@ id INT (11) NOT NULL auto_increment,
 username varchar(45) NOT NULL,
 email varchar(45) not null,
 pass varchar(110) not null,
-role int (11) not null, /* default 0,*/
-money decimal (11,2) not null, /*был флоат*/
+role int (11) not null,
+money decimal (11,2) not null, 
 PRIMARY KEY (id),
 unique key email (email)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
@@ -28,12 +28,7 @@ dateCreate datetime not null,
 dateDone datetime not null,
 idUser int(11) not null,
 idGood INT (11) not null,
-/*traineeId INT(45),*/
-/*subjectsId INT(45),*/
 primary key (id)
-/*unique key groupName (groupName, room)*/
-/*foreign key (traineeId) references trainee (id) on delete cascade,*/
-/*foreign key (subjectsId) references subjects (id) on delete cascade*/
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 show databases;

@@ -25,26 +25,6 @@ exports.getAllGoods = async function (ctx) {
         ctx.body = JSON.stringify(error.message)
     }
 
-
-    //const { query } = ctx
-    //const { skip, limit } = query
-    //delete query.skip
-    //delete query.limit
-
-    //const q = 'users' in query ?
-    //{ user: { $in: query.users.split(',') } } : query
-    // ctx.set('x-total-count', await Post.countDocuments(q))
-    // ctx.body = await Post
-    //     .find(q)
-    //     .sort({ createdDate: -1 })
-    //     .skip(+skip)
-    //     .limit(+limit)
-
-    // const q = 'goods' in query ?
-    // { goods: {$in: query.goods.split(',') } } : query
-    //скорее всего $in идет от монгуса, проверить позже через построчный дебаг
-    // возможно сделать придется по своему
-    //ctx.set('x-total-count', await )
 }
 
 exports.getGoodById = async function (ctx) {
