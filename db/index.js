@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 //
-const sequelize = new Sequelize('ttstoreproject', 'root', 'test', {
+const sequelize = new Sequelize('ttstoreproject', 'root', '70801706', {
     dialect: "mysql",
     host: "localhost"
 })
